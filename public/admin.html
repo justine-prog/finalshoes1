@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
   
   <link rel="stylesheet" href="style.css"> 
 
@@ -82,6 +83,8 @@
         margin-top: 30px;
         padding-top: 30px;
         border-top: 1px solid #eee; /* Ligne de séparation visuelle */
+        /* IMPORTANT: Ajuster la largeur max pour accueillir le tableau */
+        max-width: 900px; /* Augmente la largeur max pour le tableau */
     }
 
     /* Styles pour la section des commandes (si elle est affichée comme une liste simple) */
@@ -115,14 +118,95 @@
         background-color: #c82333;
     }
 
+    /* NOUVEAUX STYLES POUR LE TABLEAU DES COMMANDES */
+    .orders-table-container {
+        margin-top: 40px; /* Espace au-dessus du tableau */
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+        text-align: left;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .data-table th, .data-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .data-table th {
+        background-color: #e9e9e9;
+        color: #555;
+        font-weight: bold;
+        font-size: 0.9em;
+    }
+
+    .data-table tr:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+
+    .data-table tr:hover {
+        background-color: #eef;
+    }
+
+    .action-buttons-table { /* Pour les boutons Modifier/Supprimer dans le tableau */
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si pas assez d'espace */
+    }
+
+    .action-buttons-table button {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.8em;
+        width: auto; /* Prend la largeur nécessaire */
+        margin: 0; /* Pas de marge additionnelle */
+        white-space: nowrap; /* Empêche le texte du bouton de se couper */
+    }
+    .action-buttons-table button.edit-btn {
+        background-color: #ffc107;
+        color: #333;
+    }
+    .action-buttons-table button.delete-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+    .action-buttons-table button.edit-btn:hover {
+        background-color: #e0a800;
+    }
+    .action-buttons-table button.delete-btn:hover {
+        background-color: #c82333;
+    }
+    
+    .items-list-table span {
+        display: block;
+        font-size: 0.9em;
+        color: #555;
+        margin-bottom: 2px;
+    }
+    .items-list-table span:last-child {
+        margin-bottom: 0;
+    }
   </style>
 </head>
 <body>
   <div class="admin-form-container">
     <h1>Admin Login</h1>
-    <input id="user" placeholder="Username" /> <input id="pass" type="password" placeholder="Password" />
+    <input id="user" placeholder="Username" /> 
+    <input id="pass" type="password" placeholder="Password" />
     <button onclick="login()">Login</button>
-    <p id="error-message" class="error-message"></p> <div id="adminPanel" style="display:none;">
+    <p id="error-message" class="error-message"></p> 
+    
+    <div id="adminPanel" style="display:none;">
       <h2>Add Product</h2>
       <input id="pname" placeholder="Product name" />
       <input id="pprice" placeholder="Price" />
@@ -131,13 +215,43 @@
 
       <h2>Orders</h2>
       <div id="orders"></div>
-    </div>
+
+      <section class="orders-table-container">
+          <h3>Liste Détaillée des Commandes</h3>
+          <p id="no-orders-found-message" class="no-data-message" style="display: none;">Aucune commande trouvée.</p>
+          <table id="orders-detail-table" class="data-table">
+              <thead>
+                  <tr>
+                      <th>Nom Client</th>
+                      <th>Adresse</th>
+                      <th>Modèle Commandé</th>
+                      <th>Quantité</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody id="orders-detail-tbody">
+                  <tr>
+                      <td>Nom Prénom Client</td>
+                      <td>123 Rue de la Test, Ville, Code Postal</td>
+                      <td class="items-list-table">
+                          <span>Sneaker Modèle A (taille 42)</span>
+                          <span>Sneaker Modèle B (taille 38)</span>
+                      </td>
+                      <td>2</td>
+                      <td class="action-buttons-table">
+                          <button class="edit-btn">Modifier</button>
+                          <button class="delete-btn">Supprimer</button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </section>
+      </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore-compat.js"></script> 
-  <script src="firebase-config.js"></script> 
-  <script src="admin.js"></script>
-</body>
+  
+  <script src="firebase-config.js"></script> <script src="admin.js"></script> </body>
 </html>
