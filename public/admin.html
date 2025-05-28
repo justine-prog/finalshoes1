@@ -2,60 +2,58 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panneau d'Administration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Admin Panel</title>
   
   <link rel="stylesheet" href="style.css"> 
 
   <style>
     body {
+        /* Force le corps de la page à prendre toute la hauteur et à centrer le contenu */
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* Aligne en haut */
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        background-color: #f4f4f4;
-        color: #333;
-        font-family: Arial, sans-serif;
-        padding-top: 20px; /* Un peu d'espace en haut */
+        flex-direction: column; /* Pour empiler les éléments verticalement */
+        justify-content: center; /* Centre verticalement */
+        align-items: center; /* Centre horizontalement */
+        min-height: 100vh; /* Prend au moins 100% de la hauteur de la fenêtre */
+        margin: 0; /* Enlève les marges par défaut du body */
+        background-color: #f4f4f4; /* Couleur de fond cohérente */
+        color: #333; /* Couleur de texte cohérente */
+        font-family: Arial, sans-serif; /* Police cohérente */
     }
 
     /* Conteneur principal pour le formulaire de connexion et le panneau admin */
-    .admin-container { 
+    .admin-form-container {
         background-color: #fff;
         padding: 40px;
         border-radius: 8px;
         box-shadow: 0 0 15px rgba(0,0,0,0.1);
         width: 100%;
-        max-width: 900px; /* Plus large pour les tableaux */
-        margin-bottom: 20px; /* Espace en bas */
+        max-width: 450px; /* Largeur maximale pour le formulaire/panneau */
+        margin: 20px; /* Marge autour du conteneur */
         text-align: center;
     }
 
-    .admin-container h1,
-    .admin-container h2,
-    .admin-container h3 { /* Ajout de h3 pour les sous-titres */
-        color: #333;
+    .admin-form-container h1,
+    .admin-form-container h2 {
+        color: #333; /* Pour que les titres soient en gris foncé */
         margin-bottom: 20px;
     }
 
     /* Styles pour les champs de saisie */
-    .admin-container input[type="text"],
-    .admin-container input[type="password"],
-    .admin-container input[type="number"] { /* Pour les champs numériques */
-        width: calc(100% - 22px);
+    .admin-form-container input[type="text"],
+    .admin-form-container input[type="email"], /* Pour le champ 'user' si c'est un email */
+    .admin-form-container input[type="password"] {
+        width: calc(100% - 22px); /* Moins le padding et la bordure */
         padding: 12px;
         margin-bottom: 15px;
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 1em;
-        box-sizing: border-box;
+        box-sizing: border-box; /* Inclut padding et bordure dans la largeur */
     }
 
-    /* Styles pour les boutons (login, addProduct, etc.) */
-    .admin-container button {
-        background-color: #007bff;
+    /* Styles pour les boutons (login, addProduct) */
+    .admin-form-container button {
+        background-color: #007bff; /* Bleu cohérent avec tes boutons existants */
         color: white;
         padding: 12px 25px;
         border: none;
@@ -63,311 +61,82 @@
         cursor: pointer;
         font-size: 1.1em;
         transition: background-color 0.3s ease;
-        width: 100%;
+        width: 100%; /* Bouton prend toute la largeur */
         margin-top: 10px;
     }
 
-    .admin-container button:hover {
+    .admin-form-container button:hover {
         background-color: #0056b3;
     }
 
     /* Message d'erreur de connexion */
     .error-message {
-        color: #dc3545;
+        color: #dc3545; /* Rouge pour les erreurs */
         margin-top: 15px;
         font-weight: bold;
         display: none; /* Caché par défaut, affiché par JS si erreur */
     }
 
-    /* Styles pour le panneau d'admin une fois connecté */
+    /* Styles pour le panneau d'admin une fois connecté (visible/caché par JS) */
     #adminPanel {
         margin-top: 30px;
         padding-top: 30px;
-        border-top: 1px solid #eee;
+        border-top: 1px solid #eee; /* Ligne de séparation visuelle */
     }
 
-    /* Section Ajout Produit et Listes */
-    .product-form-section, .orders-section, .products-list-section {
-        margin-bottom: 40px;
-        padding: 20px;
+    /* Styles pour la section des commandes (si elle est affichée comme une liste simple) */
+    #orders div { /* Chaque commande individuelle */
         background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-        text-align: left; /* Aligne le texte à gauche dans ces sections */
-    }
-
-    .product-form-section input {
-        margin-bottom: 10px;
-    }
-    .product-form-section button {
-        width: auto; /* Le bouton "Ajouter Produit" ne prend pas toute la largeur */
-        padding: 10px 20px;
-        font-size: 1em;
-    }
-    .product-form-section .size-inputs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    .product-form-section .size-inputs input {
-        width: calc(33% - 10px); /* 3 colonnes de taille */
-        flex-grow: 1; /* Permet aux inputs de s'étirer */
-        margin-bottom: 0; /* Pas de marge en bas ici */
-    }
-    .product-form-section .size-inputs button {
-        width: auto;
-        padding: 5px 10px;
-        font-size: 0.8em;
-        margin-top: 0;
-    }
-
-    /* Styles pour les tableaux (Commandes et Produits) */
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    .data-table th, .data-table td {
-        border: 1px solid #ddd;
+        border: 1px solid #eee;
         padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
         text-align: left;
-        vertical-align: top; /* Aligne le contenu en haut des cellules */
     }
 
-    .data-table th {
-        background-color: #f2f2f2;
-        color: #555;
-        font-weight: bold;
-    }
-
-    .data-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .data-table tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .action-buttons button {
-        margin-right: 5px;
-        margin-bottom: 5px; /* Espace entre les boutons d'action */
-        padding: 8px 12px;
+    /* Styles pour les boutons Modifier/Supprimer dans les commandes */
+    #orders div button {
+        width: auto; /* Les boutons restent petits */
+        padding: 8px 15px;
         font-size: 0.9em;
-        width: auto; 
-        margin-top: 0; 
+        margin-left: 10px; /* Espace entre les boutons */
     }
-
-    .edit-btn {
+    #orders div button.edit-btn {
         background-color: #ffc107; /* Jaune */
         color: #333;
     }
-    .edit-btn:hover {
-        background-color: #e0a800;
-    }
-
-    .delete-btn {
+    #orders div button.delete-btn {
         background-color: #dc3545; /* Rouge */
     }
-    .delete-btn:hover {
+    #orders div button.edit-btn:hover {
+        background-color: #e0a800;
+    }
+    #orders div button.delete-btn:hover {
         background-color: #c82333;
     }
 
-    .no-data-message {
-        text-align: center;
-        color: #888;
-        font-style: italic;
-        padding: 20px;
-    }
-
-    /* Modal de modification (pour les commandes et produits) */
-    .modal {
-        display: none; /* Caché par défaut */
-        position: fixed;
-        z-index: 100; /* Plus haut que tout */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 10% auto; 
-        padding: 30px;
-        border: 1px solid #888;
-        width: 90%;
-        max-width: 600px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        position: relative;
-    }
-
-    .close-button {
-        color: #aaa;
-        float: right;
-        font-size: 32px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    .close-button:hover, .close-button:focus {
-        color: black;
-        text-decoration: none;
-    }
-
-    .modal-content label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-    .modal-content input[type="text"],
-    .modal-content input[type="number"],
-    .modal-content textarea {
-        width: calc(100% - 22px);
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1em;
-        box-sizing: border-box;
-    }
-    .modal-content button {
-        width: auto;
-        padding: 10px 20px;
-        font-size: 1em;
-        margin-top: 15px;
-    }
-    .modal-content .form-group {
-        margin-bottom: 15px;
-    }
-
-    /* Styles pour la liste des articles dans le tableau des commandes */
-    .order-items-list span {
-        display: block; /* Chaque article sur une nouvelle ligne */
-        font-size: 0.9em;
-        color: #555;
-    }
   </style>
 </head>
 <body>
-  <div class="admin-container">
-    <h1 id="login-title">Connexion Admin</h1>
-    <input id="user" placeholder="Nom d'utilisateur" type="text" />
-    <input id="pass" type="password" placeholder="Mot de passe" />
-    <button onclick="login()">Se connecter</button>
-    <p id="error-message" class="error-message"></p> 
+  <div class="admin-form-container">
+    <h1>Admin Login</h1>
+    <input id="user" placeholder="Username" /> <input id="pass" type="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <p id="error-message" class="error-message"></p> <div id="adminPanel" style="display:none;">
+      <h2>Add Product (Gestion future)</h2>
+      <input id="pname" placeholder="Product name" />
+      <input id="pprice" placeholder="Price" />
+      <button onclick="addProduct()">Add</button>
 
-    <div id="adminPanel" style="display:none;">
-      <button id="logout-btn" style="float: right; background-color: #6c757d;">Déconnexion</button>
-      <h2>Panneau d'Administration</h2>
-
-      <div class="product-form-section">
-        <h3>Ajouter un Nouveau Produit</h3>
-        <input id="product-name-input" placeholder="Nom du produit" type="text" />
-        <input id="product-price-input" placeholder="Prix" type="number" step="0.01" />
-        <input id="product-image-input" placeholder="URL de l'image (optionnel)" type="text" />
-        
-        <div class="size-inputs">
-            <input type="number" class="product-size-input" placeholder="Taille" min="36" max="40">
-            <input type="number" class="product-size-input" placeholder="Taille" min="36" max="40">
-            <input type="number" class="product-size-input" placeholder="Taille" min="36" max="40">
-            </div>
-        <button id="add-product-btn">Ajouter Produit</button>
-      </div>
-
-      <div class="products-list-section">
-        <h3>Gestion des Produits</h3>
-        <p id="no-products-message" class="no-data-message">Aucun produit en stock pour le moment.</p>
-        <table id="products-table" class="data-table" style="display: none;">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Prix</th>
-              <th>Image</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="products-tbody">
-            </tbody>
-        </table>
-      </div>
-
-      <div class="orders-section">
-        <h3>Gestion des Commandes Clients</h3>
-        <p id="no-orders-message" class="no-data-message">Aucune commande en cours pour le moment.</p>
-        <table id="orders-table" class="data-table" style="display: none;">
-            <thead>
-                <tr>
-                    <th>ID Commande</th>
-                    <th>Client</th>
-                    <th>Adresse</th>
-                    <th>Articles</th>
-                    <th>Quantité Totale</th>
-                    <th>Total Commande</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="orders-tbody">
-                </tbody>
-        </table>
-      </div>
-
+      <h2>Orders</h2>
+      <div id="orders"></div>
     </div>
   </div>
 
-  <script type="module" src="firebase.js"></script> 
-  <script type="module" src="admin.js"></script>
-
-  <div id="editOrderModal" class="modal">
-      <div class="modal-content">
-          <span class="close-button" id="closeOrderModal">&times;</span>
-          <h3>Modifier la commande</h3>
-          <form id="edit-order-form">
-              <input type="hidden" id="edit-order-id">
-              <div class="form-group">
-                  <label for="edit-customer-name">Nom complet :</label>
-                  <input type="text" id="edit-customer-name" name="edit-customer-name" required>
-              </div>
-              <div class="form-group">
-                  <label for="edit-customer-address">Adresse de livraison :</label>
-                  <textarea id="edit-customer-address" name="edit-customer-address" rows="3" required></textarea>
-              </div>
-              <button type="submit" id="save-order-changes-btn">Enregistrer les modifications</button>
-          </form>
-      </div>
-  </div>
-
-    <div id="editProductModal" class="modal">
-      <div class="modal-content">
-          <span class="close-button" id="closeProductModal">&times;</span>
-          <h3>Modifier le produit</h3>
-          <form id="edit-product-form">
-              <input type="hidden" id="edit-product-id">
-              <div class="form-group">
-                  <label for="edit-product-name">Nom du produit :</label>
-                  <input type="text" id="edit-product-name" name="edit-product-name" required>
-              </div>
-              <div class="form-group">
-                  <label for="edit-product-price">Prix :</label>
-                  <input type="number" step="0.01" id="edit-product-price" name="edit-product-price" required>
-              </div>
-              <div class="form-group">
-                  <label for="edit-product-image">URL de l'image :</label>
-                  <input type="text" id="edit-product-image" name="edit-product-image">
-              </div>
-              <div class="form-group">
-                  <label>Tailles disponibles (séparées par une virgule) :</label>
-                  <input type="text" id="edit-product-sizes" name="edit-product-sizes" placeholder="Ex: 36,37,38,39,40">
-              </div>
-              <button type="submit" id="save-product-changes-btn">Enregistrer les modifications</button>
-          </form>
-      </div>
-  </div>
-
+  <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore-compat.js"></script> 
+  <script src="firebase-config.js"></script> 
+  <script src="admin.js"></script>
 </body>
 </html>
