@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sneakers boutique</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <header>
+        <h1>Summer is coming, shop your best shoes now !</h1>
+    </header>
+
+    <main>
+        <section class="product-list">
+            <h2>Our exclusives items</h2>
+
+            <div class="product-card">
+                <img src="sneakermodel1.png" alt="Sneaker Model 1">
+                <h3>BLUE SKY</h3>
+                <p class="price">Price : 89.99 €</p>
+                <div class="size-selection">
+                    <label for="size-sneaker1">Size :</label>
+                    <select id="size-sneaker1" data-model="sneaker1">
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" data-product-id="sneaker1" data-product-name="Sneaker Modèle Basique" data-product-price="89.99">Add to basket</button>
+            </div>
+
+            <div class="product-card">
+                <img src="sneakermodel2.png" alt="Sneaker Model 2">
+                <h3>SILVER STAR</h3>
+                <p class="price">Price : 99.99 €</p>
+                <div class="size-selection">
+                    <label for="size-sneaker2">Size :</label>
+                    <select id="size-sneaker2" data-model="sneaker2">
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" data-product-id="sneaker2" data-product-name="Sneaker Modèle Premium" data-product-price="129.99">Add to basket</button>
+            </div>
+        </section>
+
+        <section class="cart-section">
+            <h2>Your basket</h2>
+            <div id="cart-items">
+                <p class="empty-cart-message">Your basket is empty for the moment</p>
+            </div>
+            <p class="cart-total">Total : <span id="cart-total-amount">0.00</span> €</p>
+            <button id="clear-cart-btn">Empty the basket</button>
+        </section>
+
+        <section class="order-form">
+            <h2>Finalize your order</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="customer-name">Full name :</label>
+                    <input type="text" id="customer-name" name="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-address">Delivery adress :</label>
+                    <textarea id="customer-address" name="customer-address" rows="3" required></textarea>
+                </div>
+                <button type="submit" id="send-order-btn">Send my order</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Sneakers boutique.</p>
+    </footer>
+
+    <script src="script.js"></script> </body>
+</html>
